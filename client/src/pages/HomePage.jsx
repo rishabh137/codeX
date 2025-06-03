@@ -1,12 +1,22 @@
 import { useState } from "react";
+import toast from "react-hot-toast";
+
 import Header from "../components/Header";
+
+import Xconstant from "../constant/Xconstant";
 
 const HomePage = () => {
     const [open, setOpen] = useState(false);
     const [meetLink, setMeetLink] = useState('');
 
     const generateMeetLink = () => {
-        setMeetLink('http://localhost:3000/meet/X3KJ-92KS-JD02')
+        const meetLink = Xconstant.baseUrl + crypto.randomUUID();
+        setMeetLink(meetLink);
+    }
+
+    const copyToClipBoard = () => {
+        navigator.clipboard.writeText(meetLink);
+        toast.success('Copied!');
     }
 
     return (
@@ -47,7 +57,9 @@ const HomePage = () => {
                                                 className="flex items-center gap-3 p-3 rounded-md bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition"
                                             >
                                                 <span className="text-gray-800 dark:text-white text text-sm">{meetLink}</span>
-                                                <i class="fa-regular fa-copy text-cyan-500 cursor-pointer p-2 hover:bg-gray-300 hover:rounded-md transition"></i>
+                                                <i class="fa-regular fa-copy text-cyan-500 cursor-pointer p-2 hover:bg-gray-300 hover:rounded-md transition"
+                                                    onClick={copyToClipBoard}
+                                                ></i>
                                             </li>
                                     }
                                     <li

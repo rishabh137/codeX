@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import { HomePage } from "./routes/Pages";
 import Loader from "./components/Loader";
+import { Toaster } from "react-hot-toast"
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
             <Route path="/" element={<HomePage />} />
           </Routes>
         </Suspense>
+        <Toaster />
       </div>
     </>
   )
