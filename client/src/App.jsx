@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
-import { HomePage } from "./routes/Pages";
+import { HomePage } from "./routes/Routes";
 import Loader from "./components/Loader";
 import { Toaster } from "react-hot-toast"
 
