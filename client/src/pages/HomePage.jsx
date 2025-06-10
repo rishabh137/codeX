@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import Xconstant from "../constant/Xconstant";
 
-import Header from "../components/Header";
 import HomeContent from "../components/HomeContent";
 import HomeButton from "../components/HomeButton";
 import MeetingModal from "../components/MeetingModal";
@@ -20,8 +19,7 @@ const HomePage = () => {
 
     return (
         <>
-            <Header />
-            <div className="h-96 flex flex-col items-center justify-center bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-6">
+            <div className="h-190 flex flex-col items-center justify-center bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-6">
                 <HomeContent />
 
                 <div className="relative inline-block text-left">
