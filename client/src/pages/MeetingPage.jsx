@@ -1,14 +1,16 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useContext } from "react";
 import Peer from "peerjs";
 import { useParams, useNavigate } from "react-router-dom";
-import Editor from "@monaco-editor/react";
 import { Camera, CameraOff, Mic, MicOff, Phone } from 'lucide-react';
+import { CodeContext } from "../contexts/CodeContext";
+import CodePage from "./CodePage";
+import Loader from "../components/Loader";
 
 const MeetingPage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const [codingStarted, setCodingStarted] = useState(false);
+    const { codingStarted } = useContext(CodeContext);
     const [stream, setStream] = useState(null);
     const [remoteConnected, setRemoteConnected] = useState(false);
     const [cameraOn, setCameraOn] = useState(true);
@@ -89,61 +91,56 @@ const MeetingPage = () => {
     };
 
     return (
-        <div className="h-screen flex flex-col">
+        <div className="flex flex-col">
+            {!stream && (
+                <div className={`${codingStarted ? "w-1/2" : "w-full"} absolute inset-0 flex items-center justify-center bg-opacity-80 rounded`}>
+                    <Loader />
+                </div>
+            )}
             <div className="flex flex-1">
                 <div className={`${codingStarted ? "w-1/2" : "w-full"} flex flex-col items-center justify-center`}>
-                    <div className="flex gap-4 mb-4">
+                    <div className={`${codingStarted ? "flex-col-reverse" : ""} flex gap-4 mb-4 mt-5`}>
                         <video
                             ref={localVideoRef}
-                            className="w-full h-auto rounded"
+                            className={`${codingStarted ? "h-96" : "h-auto"} w-full rounded`}
                             playsInline
                             muted
                         ></video>
-                        {remoteConnected && (
-                            <video
-                                ref={remoteVideoRef}
-                                className="w-full h-auto bg-gray-800 rounded"
-                                playsInline
-                            ></video>
-                        )}
+                        {/* {remoteConnected && ( */}
+                        <video
+                            ref={remoteVideoRef}
+                            className={`${codingStarted ? "h-96 bg-gray-800" : "h-auto"}  rounded`}
+                            playsInline
+                        ></video>
+                        {/* )} */}
                     </div>
-                    <div className="p-4 dark:bg-gray-800 flex gap-2 justify-end">
-                        <button
-                            onClick={toggleCamera}
-                            className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 cursor-pointer"
-                        >
-                            {cameraOn ? <Camera className="w-5 h-5" /> : <CameraOff className="w-5 h-5" />}
-                        </button>
-                        <button
-                            onClick={toggleMic}
-                            className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 cursor-pointer"
-                        >
-                            {micOn ? <Mic className="w-6 h-6 text-white" /> : <MicOff className="w-6 h-6 text-white" />}
-                        </button>
-                        <button
-                            onClick={endCall}
-                            className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 cursor-pointer"
-                        >
-                            <Phone className="w-6 h-6 text-green-500" />
-                        </button>
-                        <button
-                            onClick={() => setCodingStarted(true)}
-                            className="bg-cyan-500 text-white px-3 py-1 rounded hover:bg-cyan-600 cursor-pointer"
-                        >
-                            Start Coding
-                        </button>
-                    </div>
+                    {stream && (
+
+                        <div className="p-4 dark:bg-gray-800 flex gap-2 justify-end">
+                            <button
+                                onClick={toggleCamera}
+                                className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 cursor-pointer"
+                            >
+                                {cameraOn ? <Camera className="w-8 h-8" /> : <CameraOff className="w-8 h-8" />}
+                            </button>
+                            <button
+                                onClick={toggleMic}
+                                className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600 cursor-pointer"
+                            >
+                                {micOn ? <Mic className="w-8 h-8 text-white" /> : <MicOff className="w-8 h-8 text-white" />}
+                            </button>
+                            <button
+                                onClick={endCall}
+                                className="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 cursor-pointer"
+                            >
+                                <Phone className="w-8 h-8 text-green-500" />
+                            </button>
+                        </div>
+                    )}
                 </div>
 
                 {codingStarted && (
-                    <div className="w-1/2">
-                        <Editor
-                            height="100%"
-                            theme="vs-dark"
-                            defaultLanguage="javascript"
-                            defaultValue="// Start coding here..."
-                        />
-                    </div>
+                    <CodePage />
                 )}
             </div>
         </div>
