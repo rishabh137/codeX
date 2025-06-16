@@ -11,7 +11,7 @@ const Header = () => {
                     code<span className="text-cyan-400 drop-shadow-[0_0_5px_#00ffe7]">X</span>
                 </h1>
 
-                <div className="fixed  right-4">
+                <div className="right-4">
                     <button
                         onClick={() => setCodingStarted(!codingStarted)}
                         className="bg-cyan-500 text-white px-3 py-1 rounded hover:bg-cyan-600 cursor-pointer mx-20"

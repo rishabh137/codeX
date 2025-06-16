@@ -102,14 +102,14 @@ const MeetingPage = () => {
                     <div className={`${codingStarted ? "flex-col-reverse" : ""} flex gap-4 mb-4 mt-5`}>
                         <video
                             ref={localVideoRef}
-                            className={`${codingStarted ? "h-96" : "h-auto"} w-full rounded`}
+                            className={`${codingStarted ? "h-40" : "h-auto"} w-full rounded`}
                             playsInline
                             muted
                         ></video>
                         {/* {remoteConnected && ( */}
                         <video
                             ref={remoteVideoRef}
-                            className={`${codingStarted ? "h-96 bg-gray-800" : "h-auto"}  rounded`}
+                            className={`${codingStarted ? "h-96 bg-black w-150" : "h-auto"}  rounded`}
                             playsInline
                         ></video>
                         {/* )} */}

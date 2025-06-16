@@ -4,7 +4,6 @@ const ToggleMode = () => {
     const [darkMode, setDarkMode] = useState(() => {
         const storedTheme = localStorage.getItem("theme");
         if (storedTheme === "dark") return true;
-        // Default light mode if storedTheme is null or "light"
         return false;
     });
 
