@@ -1,15 +1,32 @@
 import express from "express";
-import dotenv from "dotenv";
-
-dotenv.config();
+import { createServer } from "http";
+import { Server } from "socket.io";
+import cors from "cors";
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+app.use(cors());
+const server = createServer(app);
 
-app.get('/', (req, res)=>{
-    res.send("hello");
-})
+const io = new Server(server, {
+    cors: {
+        origin: "*",
+    },
+});
 
-app.listen(PORT, ()=>{
-    console.log(`The application started at port http://localhost:${PORT}`);
-})
+io.on("connection", (socket) => {
+    console.log("User connected:", socket.id);
+
+    socket.on("join-room", (roomId) => {
+        socket.join(roomId);
+    });
+
+    socket.on("code-changed", ({ roomId, code }) => {
+        socket.to(roomId).emit("code-changed", code);
+    });
+
+    socket.on("disconnect", () => {
+        console.log("User disconnected:", socket.id);
+    });
+});
+
+server.listen(5000, () => console.log("Socket server running on port 5000"));

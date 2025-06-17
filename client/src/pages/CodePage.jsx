@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import Editor from "@monaco-editor/react";
 import axios from "axios";
-import Loader from "../components/Loader";
 import { LoaderIcon } from "react-hot-toast";
+import io from "socket.io-client";
+import { useParams } from "react-router-dom";
 
 const CodePage = () => {
+    const [socket, setSocket] = useState(null);
+    const { roomId } = useParams();
     const [language, setLanguage] = useState("java");
     const [code, setCode] = useState("");
     const [output, setOutput] = useState("");
@@ -37,6 +40,19 @@ int main() {
     useEffect(() => {
         setCode(boilerplates[language]);
     }, [language]);
+
+    useEffect(() => {
+        const newSocket = io("http://localhost:5000");
+        setSocket(newSocket);
+
+        newSocket.emit("join-room", roomId);
+
+        newSocket.on("code-changed", (newCode) => {
+            setCode(newCode);
+        });
+
+        return () => newSocket.disconnect();
+    }, [roomId]);
 
     const handleRunCode = async () => {
         if (runCodingLoader == true) return;
@@ -123,7 +139,10 @@ int main() {
                     theme="vs-dark"
                     language={language}
                     value={code}
-                    onChange={(value) => setCode(value)}
+                    onChange={(value) => {
+                        setCode(value);
+                        socket.emit("code-changed", { roomId, code: value });
+                    }}
                 />
             </div>
 
