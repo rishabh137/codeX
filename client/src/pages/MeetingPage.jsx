@@ -91,7 +91,7 @@ const MeetingPage = () => {
     };
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col dark:bg-gray-900 h-190">
             {!stream && (
                 <div className={`${codingStarted ? "w-1/2" : "w-full"} absolute inset-0 flex items-center justify-center bg-opacity-80 rounded`}>
                     <Loader />
@@ -109,7 +109,7 @@ const MeetingPage = () => {
                         {remoteConnected && (
                             <video
                                 ref={remoteVideoRef}
-                                className={`${codingStarted ? "h-96 bg-black w-150" : "h-auto"}  rounded`}
+                                className={`${codingStarted ? "h-96" : "h-auto"}  rounded`}
                                 playsInline
                             ></video>
                         )}
