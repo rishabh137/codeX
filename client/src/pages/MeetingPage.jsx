@@ -25,6 +25,8 @@ const MeetingPage = () => {
         const peer = new Peer();
         peerInstance.current = peer;
 
+        const socket = io("https://codex-backend-1oau.onrender.com");
+
         peer.on("open", (peerId) => {
             console.log("My Peer ID:", peerId);
 
@@ -36,8 +38,12 @@ const MeetingPage = () => {
                     localVideoRef.current.play();
                 }
 
-                if (id && id !== peerId) {
-                    const call = peer.call(id, userStream);
+                socket.emit("join-room", { roomId: id, peerId });
+
+                socket.on("user-connected", (remotePeerId) => {
+                    console.log("User connected:", remotePeerId);
+
+                    const call = peer.call(remotePeerId, userStream);
                     currentCall.current = call;
 
                     call.on("stream", (remoteStream) => {
@@ -47,7 +53,7 @@ const MeetingPage = () => {
                             setRemoteConnected(true);
                         }
                     });
-                }
+                });
 
                 peer.on("call", (incomingCall) => {
                     incomingCall.answer(userStream);
@@ -66,9 +72,11 @@ const MeetingPage = () => {
 
         return () => {
             peer.destroy();
+            socket.disconnect();
             stream?.getTracks().forEach((track) => track.stop());
         };
     }, [id]);
+
 
     const toggleCamera = () => {
         if (stream) {
