@@ -42,7 +42,7 @@ int main() {
     }, [language]);
 
     useEffect(() => {
-        const newSocket = io("http://localhost:5000");
+        const newSocket = io("https://codex-backend-1oau.onrender.com");
         setSocket(newSocket);
 
         newSocket.emit("join-room", roomId);
