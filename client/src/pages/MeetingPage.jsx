@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Camera, CameraOff, Mic, MicOff, Phone } from 'lucide-react';
 import { CodeContext } from "../contexts/CodeContext";
 import CodePage from "./CodePage";
+import io from "socket.io-client";
 import Loader from "../components/Loader";
 
 const MeetingPage = () => {
