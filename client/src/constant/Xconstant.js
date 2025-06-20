@@ -1,5 +1,5 @@
 const Xconstant = {
-    baseUrl: "http://localhost:5173/"
+    baseUrl: "https://codex-play.onrender.com/"
 }
 
 export default Xconstant;
