@@ -100,7 +100,7 @@ const MeetingPage = () => {
     };
 
     return (
-        <div className="flex flex-col dark:bg-gray-900 h-190">
+        <div className="flex flex-col dark:bg-gray-900 h-200">
             {!stream && (
                 <div className="absolute inset-0 flex items-center justify-center bg-opacity-80 rounded">
                     <Loader />
