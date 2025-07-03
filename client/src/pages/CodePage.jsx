@@ -45,14 +45,24 @@ int main() {
         const newSocket = io("https://codex-backend-1oau.onrender.com");
         setSocket(newSocket);
 
-        newSocket.emit("join-room", roomId);
+        const peerId = crypto.randomUUID();
+        newSocket.emit("join-room", { roomId, peerId });
 
         newSocket.on("code-changed", (newCode) => {
             setCode(newCode);
         });
 
+        newSocket.on("code-output", (output) => {
+            setOutput(output);
+        });
+
         return () => newSocket.disconnect();
     }, [roomId]);
+
+    const handleEditorChange = (value) => {
+        setCode(value);
+        socket.emit("code-changed", { roomId, code: value });
+    };
 
     const handleRunCode = async () => {
         if (runCodingLoader == true) return;
@@ -95,12 +105,16 @@ int main() {
                     clearInterval(interval);
                     if (res.data.stdout) {
                         setOutput(res.data.stdout);
+                        socket.emit("run-code", { roomId, output: res.data.stdout });
                     } else if (res.data.compile_output) {
                         setOutput(res.data.compile_output);
+                        socket.emit("run-code", { roomId, output: res.data.compile_output });
                     } else if (res.data.stderr) {
                         setOutput(res.data.stderr);
+                        socket.emit("run-code", { roomId, output: res.data.stderr });
                     } else {
                         setOutput("No Output.");
+                        socket.emit("run-code", { roomId, output: "No Output." });
                     }
                     setRunCodingLoader(false);
                 }
@@ -112,7 +126,7 @@ int main() {
     };
 
     return (
-        <div className="flex flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 w-1/2 h-190">
+        <div className={`flex flex-col bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 w-full overflow-hidden h-210`}>
             <div className="flex items-center justify-between p-4 bg-gray-100 dark:bg-gray-800">
                 <select
                     value={language}
@@ -139,10 +153,7 @@ int main() {
                     theme="vs-dark"
                     language={language}
                     value={code}
-                    onChange={(value) => {
-                        setCode(value);
-                        socket.emit("code-changed", { roomId, code: value });
-                    }}
+                    onChange={handleEditorChange}
                 />
             </div>
 

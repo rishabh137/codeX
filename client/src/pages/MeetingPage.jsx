@@ -107,12 +107,12 @@ const MeetingPage = () => {
                 </div>
             )}
             <div className="flex flex-1">
-                <div className="w-full flex flex-col items-center justify-center">
-                    <div className="flex gap-4 mb-4 mt-5">
-                        <video ref={localVideoRef} className="w-full rounded" playsInline muted></video>
+                <div className={`${codingStarted ? 'flex-wrap-reverse' : ''} w-full flex flex-col items-center justify-center`}>
+                    <div className={`flex gap-4 mb-4 mt-5 ${codingStarted ? 'flex-col-reverse h-[0vh] mt-[665px]' : ''}`}>
+                        <video ref={localVideoRef} className={`rounded ${codingStarted && remoteConnected ? 'h-[245px]' : ''}`} playsInline muted></video>
                         <video
                             ref={remoteVideoRef}
-                            className={`w-full rounded ${remoteConnected ? '' : 'hidden'}`}
+                            className={`rounded ${remoteConnected ? '' : 'hidden'} ${codingStarted ? 'h-[400px]' : 'h-full'}`}
                             playsInline
                         ></video>
 

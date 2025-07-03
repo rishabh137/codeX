@@ -70,7 +70,20 @@ io.on("connection", (socket) => {
             }
         }
     });
+
+    socket.on("start-code", ({ roomId }) => {
+        socket.to(roomId).emit("start-code");
+    });
+
+    socket.on("code-changed", ({ roomId, code }) => {
+        socket.to(roomId).emit("code-changed", code);
+    });
+
+    socket.on("run-code", ({ roomId, output }) => {
+        socket.to(roomId).emit("code-output", output);
+    });
 });
+
 
 server.listen(PORT, () => {
     console.log(`Server running on ${PORT}`);
