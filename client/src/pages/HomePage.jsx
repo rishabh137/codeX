@@ -32,7 +32,7 @@ const HomePage = () => {
     return (
         <>
             <div className="flex flex-1">
-                <div className={`flex flex-col items-center justify-center bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-6 w-full h-190`}>
+                <div className={`flex flex-col items-center justify-center bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 px-6 w-full h-211`}>
 
                     <HomeContent />
 
